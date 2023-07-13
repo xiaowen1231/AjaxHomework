@@ -3,6 +3,42 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome GitHub!!</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table id="employeesTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>年資</th>
+                <th>薪水</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
+@section Scripts{
+    <script>
+        const emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+
+        const datas = emp.employees.map(theEmp => {
+            const { name, workYears, salary } = theEmp;
+            return (`<tr>
+            <td>${name}</td>
+            <td>${workYears}</td>
+            <td>${salary}</td>
+            </tr>`)
+
+        })
+        $("#employeesTable").append(datas)
+    </script>
+}
+@section Styles{
+    <style></style>
+}
