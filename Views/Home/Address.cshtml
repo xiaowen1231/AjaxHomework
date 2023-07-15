@@ -24,13 +24,19 @@
             let cities = citiesDatas.map(city => {
                 return `<option value="${city}">${city}</option>`
             })
+            let Options = '<option value="請選擇" selected="selected">請選擇</option>'
 
-            document.querySelector('#cityPicker').innerHTML = cities.join("");
+            document.querySelector('#cityPicker').innerHTML = Options + cities.join("")
+
         })
 
         let selectedCity = "";
         $("#cityPicker").change(function () {
             selectedCity = $(this).val();
+
+            if (selectedCity=="請選擇"){
+                $("#roadPicker").empty();
+            }
 
             xhr = new XMLHttpRequest();
 
@@ -50,14 +56,14 @@
         })
 
         let selectedDistrict = "";
-        $("#districtPicker").change(function(){
+        $("#districtPicker").change(function () {
             selectedDistrict = $('#cityPicker').val() + $(this).val();
             xhr = new XMLHttpRequest();
             xhr.open('GET', `/Api/Road?district=${selectedDistrict}`);
             xhr.send();
-            xhr.addEventListener('load',()=>{
+            xhr.addEventListener('load', () => {
                 const roadDatas = JSON.parse(xhr.responseText)
-                let road = roadDatas.map(road=>{
+                let road = roadDatas.map(road => {
                     return `<option value="${road}">${road}</option>`
                 })
                 document.querySelector("#roadPicker").innerHTML = road.join("");
