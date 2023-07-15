@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+
+<div>
+    <select id="cityPicker">
+    </select>
+    <select id="districtPicker">
+    </select>
+    <select id="roadPicker">
+    </select>
+</div>
+@section Scripts{
+    <script>
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('GET', '/Api/Cities');
+        xhr.send();
+        xhr.addEventListener('load', () => {
+            const citiesDatas = JSON.parse(xhr.responseText);
+
+            let cities = citiesDatas.map(city => {
+                return `<option value="${city}">${city}</option>`
+            })
+
+            document.querySelector('#cityPicker').innerHTML = cities.join("");
+        })
+
+        let selectedCity = "";
+        $("#cityPicker").change(function () {
+            selectedCity = $(this).val();
+
+            xhr = new XMLHttpRequest();
+
+            if (selectedCity != null) {
+
+                xhr.open('GET', `/Api/Districts?city=${selectedCity}`)
+                xhr.send()
+                xhr.addEventListener('load', () => {
+                    const districtsDatas = JSON.parse(xhr.responseText);
+                    let districts = districtsDatas.map(district => {
+                        return `<option value="${district}">${district}</option>`
+                    })
+
+                    document.querySelector('#districtPicker').innerHTML = districts.join("");
+                })
+            }
+        })
+
+        let selectedDistrict = "";
+        $("#districtPicker").change(function(){
+            selectedDistrict = $('#cityPicker').val() + $(this).val();
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', `/Api/Road?district=${selectedDistrict}`);
+            xhr.send();
+            xhr.addEventListener('load',()=>{
+                const roadDatas = JSON.parse(xhr.responseText)
+                let road = roadDatas.map(road=>{
+                    return `<option value="${road}">${road}</option>`
+                })
+                document.querySelector("#roadPicker").innerHTML = road.join("");
+            })
+        })
+    </script>
+}
