@@ -3,53 +3,89 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="container">
+    <h1>回家作業三</h1>
 
-<h1>Create</h1>
+    <h1>會員註冊</h1>
 
-<h4>Members</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+    <h4>輸入會員資料</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @*<div class="form-group">
                 <label asp-for="MemberId" class="control-label"></label>
                 <input asp-for="MemberId" class="form-control" />
                 <span asp-validation-for="MemberId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" id="Account" />
+                    <span asp-validation-for="Name" id="accountValidation"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Age" class="control-label"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
                 <label asp-for="FileName" class="control-label"></label>
                 <input asp-for="FileName" class="form-control" />
                 <span asp-validation-for="FileName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                </div>
+                <div class="form-group">
                 <label asp-for="FileData" class="control-label"></label>
                 <input asp-for="FileData" class="form-control" />
                 <span asp-validation-for="FileData" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="FileData" class="control-label">photo</label>
+                    <input type="file" name="photo" class="form-control" />
+                    <span asp-validation-for="FileData" class="text-danger"></span>
+                </div>
+                <div class="form-group d-inline-block">
+                    <a asp-action="Index" class="btn btn-primary">返回</a>
+                </div>
+                <div class="form-group d-inline-block">
+                    <input type="submit" value="註冊" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+</div>
+@section Scripts{
+    <script>
+        let inputAccount = "";
+
+        $("#Account").on(
+            {
+                blur: function () {
+                    inputAccount = $(this).val();
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('GET', `/Api/CheckAccount?account=${inputAccount}`)
+                    xhr.send()
+                    xhr.addEventListener("load", function () {
+                        let hasAccount = JSON.parse(xhr.responseText)
+                        if (inputAccount === "")
+                            $("#accountValidation").text("請輸入帳號").addClass("text-danger")
+                        else if (hasAccount)
+                            $("#accountValidation").text("此帳號已被使用").addClass("text-danger")
+                        else
+                            $("#accountValidation").text("此帳號可以使用")
+                    })
+                },
+                focus: function () {
+                    $("#accountValidation").text("").css("color", "blue").removeClass("text-danger")
+
+                }
+            })
+    </script>
+}

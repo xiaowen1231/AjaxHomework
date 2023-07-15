@@ -39,5 +39,13 @@ namespace AjaxHomework.Controllers
                 
             return Json(road);
         }
+
+        public bool CheckAccount(string account)
+        {
+            var accountInDb = _context.Members.Where(m=>m.Name == account).FirstOrDefault();
+            bool hasAccount = accountInDb != null ? true : false;
+
+            return hasAccount;
+        }
     }
 }
