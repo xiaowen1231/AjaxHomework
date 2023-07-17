@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "AddressCallback";
+}
+
+<h1>AddressCallback</h1>
+
+<div class="container text-center">
+    <select id="selectCitys">
+    </select>
+    <select id="selectDistricts">
+    </select>
+    <select id="selectRoads">
+    </select>
+</div>
+
+@section Scripts{
+    <script>
+        const selectCitys = document.querySelector("#selectCitys");
+        const selectDistricts = document.querySelector("#selectDistricts");
+        const selectRoads = document.querySelector("#selectRoads");
+
+        function loadCitys(){
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', `/api/Cities`)
+            xhr.send()
+            xhr.addEventListener('load',()=>{
+                let datas = JSON.parse(xhr.responseText)
+                let cities = datas.map(city => {
+                    return `<option value="${city}">${city}</option>`
+                })
+                selectCitys.innerHTML = cities.join("");
+                loadDistricts()
+            })
+        }
+        loadCitys()
+
+        function loadDistricts(){
+            const city = selectCitys.options[selectCitys.selectedIndex].value;
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', `/api/Districts?city=${city}`)
+            xhr.send()
+            xhr.addEventListener('load', () => {
+                let datas = JSON.parse(xhr.responseText)
+                let districts = datas.map(districts => {
+                    return `<option value="${districts}">${districts}</option>`
+                })
+                selectDistricts.innerHTML = districts.join("");
+                loadRoads();
+            })
+        }
+
+        function loadRoads(){
+            const district = selectCitys.options[selectCitys.selectedIndex].value + selectDistricts.options[selectDistricts.selectedIndex].value;
+            console.log(district)
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', `/api/Road?district=${district}`)
+            xhr.send()
+            xhr.addEventListener('load', () => {
+                let datas = JSON.parse(xhr.responseText)
+                let roads = datas.map(roads => {
+                    return `<option value="${roads}">${roads}</option>`
+                })
+                selectRoads.innerHTML = roads.join("");
+            })
+        }
+
+        selectCitys.addEventListener('change',()=>{
+            loadDistricts();
+        })
+
+        selectDistricts.addEventListener('change',()=>{
+            loadRoads();
+        })
+    </script>
+}
+@section Styles{
+
+}

@@ -47,5 +47,10 @@ namespace AjaxHomework.Controllers
 
             return hasAccount;
         }
+        public IActionResult MembersName()
+        {
+            var membersName = _context.Members.Select(m=>m.Name);
+            return Json(membersName);
+        }
     }
 }

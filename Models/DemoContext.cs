@@ -34,8 +34,6 @@ namespace AjaxHomework.Models
         {
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.City)
                     .HasMaxLength(10)
                     .HasColumnName("city");
@@ -52,8 +50,6 @@ namespace AjaxHomework.Models
             modelBuilder.Entity<Members>(entity =>
             {
                 entity.HasKey(e => e.MemberId);
-
-                entity.Property(e => e.MemberId).ValueGeneratedNever();
 
                 entity.Property(e => e.Email).HasMaxLength(200);
 

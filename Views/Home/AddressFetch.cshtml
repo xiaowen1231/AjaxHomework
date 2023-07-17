@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "AddressFetch";
+}
+<h1>作業六</h1>
+
+<h4>AddressFetch</h4>
+
+<div class="container text-center">
+    <select id="selectCitys">
+    </select>
+    <select id="selectDistricts">
+    </select>
+    <select id="selectRoads">
+    </select>
+</div>
+
+@section Scripts{
+    <script>
+        const selectCitys = document.querySelector("#selectCitys");
+        const selectDistricts = document.querySelector("#selectDistricts");
+        const selectRoads = document.querySelector("#selectRoads");
+
+        async function loadCitys() {
+            const response = await fetch('/api/Cities')
+            const datas = await response.json();
+            let cities = datas.map(city => {
+                return `<option value="${city}">${city}</option>`
+            })
+            selectCitys.innerHTML = cities.join("");
+            loadDistricts()
+        }
+
+        loadCitys();
+
+        async function loadDistricts() {
+            const city = selectCitys.options[selectCitys.selectedIndex].value;
+            const response = await fetch(`/api/Districts?city=${city}`)
+            const datas = await response.json();
+            let districts = datas.map(districts => {
+                return `<option value="${districts}">${districts}</option>`
+            })
+            selectDistricts.innerHTML = districts.join("");
+            loadRoads();
+        }
+
+        async function loadRoads(){
+            const district = selectCitys.options[selectCitys.selectedIndex].value + selectDistricts.options[selectDistricts.selectedIndex].value;
+            const response = await fetch(`/api/Road?district=${district}`)
+            const datas = await response.json();
+            let roads = datas.map(roads=>{
+                return `<option value="${roads}">${roads}</option>`
+            })
+            selectRoads.innerHTML = roads.join("");
+        }
+        selectCitys.addEventListener('change',function(){
+            loadDistricts();
+        })
+        selectDistricts.addEventListener('change',function(){
+            loadRoads();
+        })
+    </script>
+}

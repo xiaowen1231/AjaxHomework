@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "AutoComplete";
+}
+
+<h1>AutoComplete</h1>
+
+<div>
+    <input type="text" id="name" />
+</div>
+
+@section Scripts{
+    <script>
+
+        async function loadData(){
+
+            const response = await fetch(`/api/MembersName`)
+            const allName = await response.json()
+            let datas = allName
+
+            $('#name').autocomplete({
+            source: datas
+        })
+        }
+        $(document).ready(function(){
+            loadData()
+        })
+        
+    </script>
+}
+@section Styles{
+    <style></style>
+}

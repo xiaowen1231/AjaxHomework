@@ -33,5 +33,22 @@ namespace AjaxHomework.Controllers
         {
             return View();
         }
+        public IActionResult AddressCallback()
+        {
+            return View();
+        }
+
+        public IActionResult previewImage()
+        {
+            return View();
+        }
+        public IActionResult AddressFetch()
+        {
+            return View();
+        }
+        public IActionResult AutoComplete()
+        {
+            return View();
+        }
     }
 }

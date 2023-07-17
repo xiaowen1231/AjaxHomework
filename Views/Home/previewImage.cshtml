@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "previewImage";
+}
+
+<h1>previewImage</h1>
+
+<div class="d-flex justify-content-center">
+    <form>
+        <div>
+            <input type="file" name="photo" id="photo" class="form-control" />
+        </div>
+        <div class="border my-2">
+            <img src="" id="imgPreview" />
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        const photo = document.querySelector('#photo');
+
+        photo.addEventListener('change', () => {
+
+            const file = photo.files
+            if (file.length == 0) {
+                $('#imgPreview').attr('src', null)
+            }
+            else {
+                const objectURL = URL.createObjectURL(file[0]);
+                $('#imgPreview').attr('src', objectURL)
+            }
+        })
+    </script>
+
+
+}
