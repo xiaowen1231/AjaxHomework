@@ -32,34 +32,31 @@
         })
 
         $("#cityPicker").change(function () {
-        let selectedCity = "";
+            $("#roadPicker").empty();
+            $("#districtPicker").empty();
+
+            let selectedCity = "";
             selectedCity = $(this).val();
-
-            if (selectedCity == "請選擇") {
-                $("#roadPicker").empty();
-                $("#districtPicker").empty();
-            }
-
+            
             xhr = new XMLHttpRequest();
 
-            if (selectedCity != "請選擇") {
-
-                xhr.open('GET', `/Api/Districts?city=${selectedCity}`)
-                xhr.send()
-                xhr.addEventListener('load', () => {
-                    const districtsDatas = JSON.parse(xhr.responseText);
-                    let districts = districtsDatas.map(district => {
-                        return `<option value="${district}">${district}</option>`
-                    })
-
-                    document.querySelector('#districtPicker').innerHTML = firstOption + districts.join("");
+            xhr.open('GET', `/Api/Districts?city=${selectedCity}`)
+            xhr.send()
+            xhr.addEventListener('load', () => {
+                const districtsDatas = JSON.parse(xhr.responseText);
+                let districts = districtsDatas.map(district => {
+                    return `<option value="${district}">${district}</option>`
                 })
-            }
+
+                document.querySelector('#districtPicker').innerHTML = firstOption + districts.join("");
+            })
+
         })
 
         $("#districtPicker").change(function () {
-        let selectedDistrict = "";
+            let selectedDistrict = "";
             selectedDistrict = $('#cityPicker').val() + $(this).val();
+
             xhr = new XMLHttpRequest();
             xhr.open('GET', `/Api/Road?district=${selectedDistrict}`);
             xhr.send();
